@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login
+
+# from django.contrib.auth.views import login
+from django.contrib import messages
+
+
+def user_login(request):
+    if request.user.is_authenticated():
+        messages.info(request, 'You already logged')
+        return HttpResponseRedirect('/')
+
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    return render(request, 'registration/login.html')
+
+
+def home(request):
+    return render(request, 'users/home.html')
