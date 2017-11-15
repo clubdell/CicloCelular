@@ -129,3 +129,8 @@ STATICFILES_DIRS = [
 
 # User management
 LOGIN_REDIRECT_URL = '/'
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
